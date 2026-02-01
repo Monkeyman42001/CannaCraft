@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.monkeyman42001.cannacraft.CannaCraft;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
@@ -14,7 +15,7 @@ import net.monkeyman42001.cannacraft.CannaCraft;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 
 
-@EventBusSubscriber(modid= CannaCraft.MOD_ID)
+@EventBusSubscriber(modid = CannaCraft.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class CannacraftModEvents {
 
 	 @SubscribeEvent

@@ -6,6 +6,6 @@ public class GetSeedStrainProcedure {
 	public static String execute(Entity entity) {
 		if (entity == null)
 			return "";
-		return entity.getPersistentData().getStringOr("strain", "");
+		return entity.getPersistentData().getString("strain");
 	}
 }

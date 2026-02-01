@@ -22,9 +22,9 @@ public class CannacraftModVillagers {
             () -> new PoiType(ImmutableSet.copyOf(CannacraftBlocks.GROW_TENT.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     public static final Holder<VillagerProfession> DEALER = VILLAGER_PROFESSIONS.register("dealer",
-            () -> new VillagerProfession(Component.translatable("profession.cannacraft.dealer"), holder -> holder.value() == DEALER_POI.value(),
+            () -> new VillagerProfession("dealer", holder -> holder.value() == DEALER_POI.value(),
                     poiTypeHolder -> poiTypeHolder.value() == DEALER_POI.value(), ImmutableSet.of(), ImmutableSet.of(),
-                    BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("block.piston.extend"))));
+                    BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.piston.extend"))));
 
 
     public static void register(IEventBus eventBus) {

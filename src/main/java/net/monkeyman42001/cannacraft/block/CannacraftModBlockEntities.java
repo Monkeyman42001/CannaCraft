@@ -3,6 +3,7 @@
  */
 package net.monkeyman42001.cannacraft.block;
 
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
@@ -19,7 +20,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 //import net.monkeyman42001.cannacraft.block.entity.CannabisPlant0BlockEntity;
 import net.monkeyman42001.cannacraft.CannaCraft;
 
-@EventBusSubscriber
+//@EventBusSubscriber(modid=CannaCraft.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class CannacraftModBlockEntities {
 	public static final DeferredRegister<BlockEntityType<?>> REGISTRY = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, CannaCraft.MOD_ID);
 	//public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CannabisPlant0BlockEntity>> CANNABIS_PLANT_0 = register("cannabis_plant_0", CannacraftModBlocks.CANNABIS_PLANT_0, CannabisPlant0BlockEntity::new);
@@ -34,7 +35,7 @@ public class CannacraftModBlockEntities {
 	//	return REGISTRY.register(registryname, () -> new BlockEntityType(supplier, block.get()));
 	//}
 
-	@SubscribeEvent
+	//@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		//event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CANNABIS_PLANT_0.get(), SidedInvWrapper::new);
 		//event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CANNABIS_PLANT_1.get(), SidedInvWrapper::new);

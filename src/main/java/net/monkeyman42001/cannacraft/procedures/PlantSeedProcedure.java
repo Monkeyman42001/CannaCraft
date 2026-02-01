@@ -30,9 +30,9 @@ public class PlantSeedProcedure {
 		ItemStack seeds = ItemStack.EMPTY;
 		BlockState stage0 = Blocks.AIR.defaultBlockState();
 		String seedStrain = "";
-		seedStrain = itemstack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getStringOr("strain", "");
+		seedStrain = itemstack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getString("strain");
 		seeds = new ItemStack(CannacraftItems.CANNABIS_SEED.get()).copy();
-		stage0 = CannacraftBlocks.CANNABIS_PLANT_0.get().defaultBlockState();
+		//stage0 = CannacraftBlocks.CANNABIS_PLANT_0.get().defaultBlockState();
 		if (stage0.canSurvive(world, BlockPos.containing(x, y + 1, z))) {
 			world.setBlock(BlockPos.containing(x, y + 1, z), stage0, 3);
 			if (!world.isClientSide()) {

@@ -13,7 +13,7 @@ import net.minecraft.core.registries.Registries;
 
 import net.monkeyman42001.cannacraft.CannaCraft;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid=CannaCraft.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class CannacraftModTabs {
 	public static final DeferredRegister<CreativeModeTab> REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CannaCraft.MOD_ID);
 

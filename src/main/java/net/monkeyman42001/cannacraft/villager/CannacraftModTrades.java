@@ -70,7 +70,7 @@ public class CannacraftModTrades {
     }
 	@SubscribeEvent
     public static void addTrades(VillagerTradesEvent event) {
-        if (event.getType() != CannacraftModVillagers.DEALER.getKey()) {
+        if (event.getType().equals(CannacraftModVillagers.DEALER.getKey())) {
             return;
         }
 

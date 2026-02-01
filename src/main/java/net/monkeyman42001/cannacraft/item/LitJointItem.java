@@ -1,7 +1,9 @@
 package net.monkeyman42001.cannacraft.item;
 
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.item.ItemUseAnimation;
+//import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.entity.player.Player;
@@ -9,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
 
-import net.mcreator.cannacraft.procedures.LitJointSmokeEffectProcedure;
+import net.monkeyman42001.cannacraft.procedures.LitJointSmokeEffectProcedure;
 
 public class LitJointItem extends Item {
 	public LitJointItem(Item.Properties properties) {
@@ -17,8 +19,8 @@ public class LitJointItem extends Item {
 	}
 
 	@Override
-	public ItemUseAnimation getUseAnimation(ItemStack itemstack) {
-		return ItemUseAnimation.BOW;
+	public UseAnim getUseAnimation(ItemStack itemstack) {
+		return UseAnim.BOW;
 	}
 
 	@Override
@@ -32,8 +34,8 @@ public class LitJointItem extends Item {
 	}
 
 	@Override
-	public InteractionResult use(Level world, Player entity, InteractionHand hand) {
-		InteractionResult ar = super.use(world, entity, hand);
+	public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		entity.startUsingItem(hand);
 		return ar;
 	}

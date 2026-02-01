@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "bbb",
+    "aaa"
+  ],
+  "key": {
+    "a": "minecraft:paper",
+    "b": "cannacraft:nug"
+  },
+  "result": {
+    "id": "cannacraft:joint",
+    "count": 1
+  }
+}

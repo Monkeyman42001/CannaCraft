@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "minecraft:block/wheat_stage6",
+    "particle": "minecraft:block/wheat_stage6"
+  },
+  "render_type": "cutout"
+}

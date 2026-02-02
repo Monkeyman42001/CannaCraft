@@ -39,10 +39,10 @@ public class CannabisSeedItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
-        if (strain != null && !strain.getName().isBlank()) {
-            tooltipComponents.add(Component.literal("Strain: " + strain.getName()));
-            tooltipComponents.add(Component.literal("THC %: " + strain.getThcPercentage()));
-            tooltipComponents.add(Component.literal("Terpene %: " + strain.getTerpenePercentage()));
+        if (strain != null && !strain.name().isBlank()) {
+            tooltipComponents.add(Component.literal("Strain: " + strain.name()));
+            tooltipComponents.add(Component.literal("THC %: " + strain.thcPercentage()));
+            tooltipComponents.add(Component.literal("Terpene %: " + strain.terpenePercentage()));
         } else {
             tooltipComponents.add(Component.literal("Strain: Unknown"));
         }

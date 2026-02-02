@@ -30,7 +30,6 @@ public class CannacraftItems {
 		NUG = ITEMS.register("nug", () -> new Item(new Item.Properties()));
 		JOINT = ITEMS.register("joint", () -> new Item(new Item.Properties()));
 		LIGHTER = ITEMS.register("lighter", () -> new Item(new Item.Properties()));
-		GROW_TENT = block(CannacraftBlocks.GROW_TENT);
 		LIT_JOINT = ITEMS.register("lit_joint", () -> new Item(new Item.Properties()));
 	}
 
@@ -38,13 +37,5 @@ public class CannacraftItems {
 	// End of user code block custom items
 	public static void register(IEventBus eventBus) {
 		ITEMS.register(eventBus);
-	}
-
-	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block) {
-		return block(block, new Item.Properties());
-	}
-
-	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block, Item.Properties properties) {
-		return ITEMS.registerItem(block.getId().getPath(), prop -> new BlockItem(block.get(), prop), properties);
 	}
 }

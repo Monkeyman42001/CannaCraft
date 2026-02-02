@@ -24,6 +24,12 @@ import java.util.function.Supplier;
 
 public class CannacraftBlocks {
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CannaCraft.MOD_ID);
+	public static final DeferredBlock<Block> CANNABIS_PLANT = registerBlockNoItem("cannabis_plant",
+			() -> new CannabisPlantBlock(BlockBehaviour.Properties.of()
+					.noCollission()
+					.randomTicks()
+					.instabreak()
+					.sound(SoundType.CROP)));
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_0;
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_1;
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_2;
@@ -46,6 +52,10 @@ public class CannacraftBlocks {
 		DeferredBlock<T> toReturn = BLOCKS.register(name, block);
 		registerBlockItem(name, toReturn);
 		return toReturn;
+	}
+
+	private static <T extends Block> DeferredBlock<T> registerBlockNoItem(String name, Supplier<T> block) {
+		return BLOCKS.register(name, block);
 	}
 
 	private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {

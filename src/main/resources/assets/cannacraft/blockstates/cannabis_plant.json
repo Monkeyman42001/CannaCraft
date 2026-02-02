@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "age=0": { "model": "cannacraft:block/cannabis_plant_0" },
+    "age=1": { "model": "cannacraft:block/cannabis_plant_1" },
+    "age=2": { "model": "cannacraft:block/cannabis_plant_2" },
+    "age=3": { "model": "cannacraft:block/cannabis_plant_3" },
+    "age=4": { "model": "cannacraft:block/cannabis_plant_4" }
+  }
+}

@@ -2,6 +2,7 @@ package net.monkeyman42001.cannacraft;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
+import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
@@ -45,6 +46,7 @@ public class CannaCraft {
 
         CannacraftDataComponents.register(modEventBus);
         CannacraftBlocks.register(modEventBus);
+        CannacraftModBlockEntities.register(modEventBus);
         CannacraftItems.register(modEventBus);
         CannacraftModVillagers.register(modEventBus);
 

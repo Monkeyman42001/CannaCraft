@@ -1,5 +1,6 @@
 package net.monkeyman42001.cannacraft.item;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -7,7 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
+import net.monkeyman42001.cannacraft.block.CannabisPlantBlock;
+import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
+import net.monkeyman42001.cannacraft.block.entity.CannabisPlantBlockEntity;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.component.Strain;
 
@@ -71,11 +78,39 @@ public class CannabisSeedItem extends Item {
 
     @Override
 	public InteractionResult useOn(UseOnContext context) {
-		//super.useOn(context);
-        Player player = net.minecraft.client.Minecraft.getInstance().player;
-        player.sendSystemMessage(Component.literal("EXT TEST: tooltip called!"));
-        System.out.println("right clicked");
-		//PlantSeedProcedure.execute(context.getLevel(), context.getClickedPos().getX(), context.getClickedPos().getY(), context.getClickedPos().getZ(), context.getPlayer(), context.getItemInHand());
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        Player player = context.getPlayer();
+        ItemStack stack = context.getItemInHand();
+
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!level.getBlockState(pos).is(Blocks.FARMLAND)) {
+            return InteractionResult.PASS;
+        }
+
+        BlockPos plantPos = pos.above();
+        if (!level.getBlockState(plantPos).isAir()) {
+            return InteractionResult.PASS;
+        }
+
+        level.setBlock(plantPos, CannacraftBlocks.CANNABIS_PLANT.get().defaultBlockState()
+                .setValue(CannabisPlantBlock.AGE, 0), 3);
+
+        BlockEntity blockEntity = level.getBlockEntity(plantPos);
+        if (blockEntity instanceof CannabisPlantBlockEntity plantEntity) {
+            Strain strain = getStrain(stack);
+            if (strain != null) {
+                plantEntity.setStrain(strain);
+            }
+        }
+
+        if (player == null || !player.getAbilities().instabuild) {
+            stack.shrink(1);
+        }
+
 		return InteractionResult.SUCCESS;
 	}
 

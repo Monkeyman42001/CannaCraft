@@ -1,6 +1,7 @@
 package net.monkeyman42001.cannacraft.item;
 
 import net.minecraft.client.multiplayer.chat.ChatLog;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -41,7 +42,8 @@ public class CannabisSeedItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("TOOLTIP WORKS"));
+        String strain = stack.get(CannacraftDataComponents.STRAIN);
+        strain.
     }
 
     /*

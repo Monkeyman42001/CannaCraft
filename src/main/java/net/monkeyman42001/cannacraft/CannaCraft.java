@@ -2,6 +2,7 @@ package net.monkeyman42001.cannacraft;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
+import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 import org.slf4j.Logger;
@@ -41,6 +42,8 @@ public class CannaCraft {
         //modEventBus.register(this);
         NeoForge.EVENT_BUS.register(this);
 
+
+        CannacraftDataComponents.register(modEventBus);
         CannacraftBlocks.register(modEventBus);
         CannacraftItems.register(modEventBus);
         CannacraftModVillagers.register(modEventBus);

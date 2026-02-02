@@ -9,13 +9,11 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 
-import net.monkeyman42001.cannacraft.CannaCraft;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
-import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 import net.monkeyman42001.cannacraft.item.CannabisSeedItem;
+import net.monkeyman42001.cannacraft.component.Strain;
 
 import java.util.List;
-import java.util.Map;
 
 public class CannacraftModTrades {
 
@@ -24,7 +22,7 @@ public class CannacraftModTrades {
             ItemCost payment = new ItemCost(Items.EMERALD, 1);
 
             ItemStack result = new ItemStack(CannacraftItems.CANNABIS_SEED.get(), 1);
-            CannabisSeedItem.setStrain(result, "Sour Diesel");
+            CannabisSeedItem.setStrain(result, new Strain("Sour Diesel", 0.0f, 0.0f));
 
             return new MerchantOffer(
                     payment,
@@ -41,7 +39,7 @@ public class CannacraftModTrades {
             ItemCost payment = new ItemCost(Items.WHEAT, 1);
 
             ItemStack result = new ItemStack(CannacraftItems.CANNABIS_SEED.get(), 1);
-            CannabisSeedItem.setStrain(result, "Blue Dream");
+            CannabisSeedItem.setStrain(result, new Strain("Blue Dream", 0.0f, 0.0f));
 
             return new MerchantOffer(
                     payment,
@@ -58,7 +56,7 @@ public class CannacraftModTrades {
             ItemCost payment = new ItemCost(Items.DIAMOND, 1);
 
             ItemStack result = new ItemStack(CannacraftItems.CANNABIS_SEED.get(), 1);
-            CannabisSeedItem.setStrain(result, "OG Kush");
+            CannabisSeedItem.setStrain(result, new Strain("OG Kush", 0.0f, 0.0f));
 
             return new MerchantOffer(
                     payment,

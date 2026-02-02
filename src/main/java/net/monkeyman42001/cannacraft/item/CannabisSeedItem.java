@@ -1,7 +1,5 @@
 package net.monkeyman42001.cannacraft.item;
 
-import net.minecraft.client.multiplayer.chat.ChatLog;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -11,9 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.TooltipFlag;
 
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
-import net.monkeyman42001.cannacraft.procedures.PlantSeedProcedure;
-import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
-import org.jetbrains.annotations.NotNull;
+import net.monkeyman42001.cannacraft.component.Strain;
 
 import java.util.List;
 
@@ -27,11 +23,11 @@ public class CannabisSeedItem extends Item {
        STRAIN DATA COMPONENT
        ======================= */
 
-    public static void setStrain(ItemStack stack, String strain) {
+    public static void setStrain(ItemStack stack, Strain strain) {
         stack.set(CannacraftDataComponents.STRAIN.get(), strain);
     }
 
-    public static String getStrain(ItemStack stack) {
+    public static Strain getStrain(ItemStack stack) {
         return stack.get(CannacraftDataComponents.STRAIN.get());
     }
 
@@ -42,9 +38,11 @@ public class CannabisSeedItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        String strain = stack.get(CannacraftDataComponents.STRAIN.get());
-        if (strain != null && !strain.isBlank()) {
-            tooltipComponents.add(Component.literal("Strain: " + strain));
+        Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
+        if (strain != null && !strain.getName().isBlank()) {
+            tooltipComponents.add(Component.literal("Strain: " + strain.getName()));
+            tooltipComponents.add(Component.literal("THC %: " + strain.getThcPercentage()));
+            tooltipComponents.add(Component.literal("Terpene %: " + strain.getTerpenePercentage()));
         } else {
             tooltipComponents.add(Component.literal("Strain: Unknown"));
         }

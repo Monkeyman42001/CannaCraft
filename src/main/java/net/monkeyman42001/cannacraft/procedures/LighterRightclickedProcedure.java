@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.InteractionHand;
 
+import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
+import net.monkeyman42001.cannacraft.component.Strain;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 
 public class LighterRightclickedProcedure {
@@ -38,7 +40,12 @@ public class LighterRightclickedProcedure {
 		}
 
 		InteractionHand jointHand = jointInMain ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		ItemStack jointStack = jointInMain ? mainHand : offHand;
 		ItemStack litJoint = new ItemStack(CannacraftItems.LIT_JOINT.get(), 1);
+		Strain strain = jointStack.get(CannacraftDataComponents.STRAIN.get());
+		if (strain != null) {
+			litJoint.set(CannacraftDataComponents.STRAIN.get(), strain);
+		}
 		livingEntity.setItemInHand(jointHand, litJoint);
 		if (livingEntity instanceof Player player) {
 			player.getInventory().setChanged();

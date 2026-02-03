@@ -1,6 +1,7 @@
 package net.monkeyman42001.cannacraft.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,8 +25,8 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.saveAdditional(tag, provider);
 		if (strain != null) {
 			tag.putString("strain_name", strain.name());
 			tag.putFloat("strain_thc", strain.thcPercentage());
@@ -34,8 +35,8 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.loadAdditional(tag, provider);
 		if (tag.contains("strain_name")) {
 			String name = tag.getString("strain_name");
 			float thc = tag.getFloat("strain_thc");

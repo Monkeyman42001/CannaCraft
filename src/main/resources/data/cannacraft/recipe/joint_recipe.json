@@ -7,8 +7,12 @@
     "aaa"
   ],
   "key": {
-    "a": "minecraft:paper",
-    "b": "cannacraft:nug"
+    "a": {
+      "item": "minecraft:paper"
+    },
+    "b": {
+      "item": "cannacraft:nug"
+    }
   },
   "result": {
     "id": "cannacraft:joint",

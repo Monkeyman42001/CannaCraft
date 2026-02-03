@@ -27,7 +27,7 @@ public class CannacraftModBlockEntities {
 			DeferredHolder<Block, Block> block,
 			BlockEntityType.BlockEntitySupplier<T> supplier
 	) {
-		return REGISTRY.register(registryName, () -> new BlockEntityType<>(supplier, block.get()));
+		return REGISTRY.register(registryName, () -> BlockEntityType.Builder.of(supplier, block.get()).build(null));
 	}
 
 	public static void register(IEventBus eventBus) {

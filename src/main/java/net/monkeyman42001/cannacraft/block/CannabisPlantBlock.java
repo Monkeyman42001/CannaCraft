@@ -3,7 +3,7 @@ package net.monkeyman42001.cannacraft.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.EntityBlock;
@@ -54,7 +54,7 @@ public class CannabisPlantBlock extends CropBlock implements EntityBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, LevelReader level, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return SHAPES[state.getValue(getAgeProperty())];
 	}
 

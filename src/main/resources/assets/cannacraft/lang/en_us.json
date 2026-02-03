@@ -1,6 +1,7 @@
 {
   "item.cannacraft.cannabis_seed": "Cannabis Seed",
   "item.cannacraft.nug": "Nug",
+  "item.cannacraft.extract": "Extract",
   "item.cannacraft.cannabis_plant_0": "Cannabis Plant 0",
   "item.cannacraft.cannabis_plant_1": "Cannabis Plant 0",
   "item.cannacraft.cannabis_plant_2": "Cannabis Plant 0",
@@ -9,6 +10,7 @@
   "item.cannacraft.joint": "Joint",
   "item.cannacraft.lighter": "Lighter",
   "block.cannacraft.grow_tent": "Grow Tent",
+  "block.cannacraft.extractor": "Extractor",
   "item.cannacraft.lit_joint": "Lit Joint",
   "entity.minecraft.villager.cannacraft.dealer": "Dealer"
 }

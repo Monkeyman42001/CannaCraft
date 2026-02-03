@@ -30,6 +30,8 @@ public class CannacraftBlocks {
 					.randomTicks()
 					.instabreak()
 					.sound(SoundType.CROP)));
+	public static final DeferredBlock<Block> EXTRACTOR = registerBlock("extractor",
+			() -> new ExtractorBlock(BlockBehaviour.Properties.of().sound(SoundType.METAL).strength(3f, 6f)));
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_0;
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_1;
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_2;

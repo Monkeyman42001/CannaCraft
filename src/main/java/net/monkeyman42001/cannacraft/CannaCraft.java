@@ -5,6 +5,7 @@ import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
+import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 import org.slf4j.Logger;
 
@@ -48,6 +49,7 @@ public class CannaCraft {
         CannacraftBlocks.register(modEventBus);
         CannacraftModBlockEntities.register(modEventBus);
         CannacraftItems.register(modEventBus);
+        CannacraftMenus.register(modEventBus);
         CannacraftModVillagers.register(modEventBus);
 
 
@@ -67,6 +69,7 @@ public class CannaCraft {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(CannacraftItems.CANNABIS_SEED);
             event.accept(CannacraftItems.NUG);
+            event.accept(CannacraftItems.EXTRACT);
             event.accept(CannacraftItems.JOINT);
             event.accept(CannacraftItems.LIT_JOINT);
             event.accept(CannacraftItems.LIGHTER);
@@ -74,6 +77,7 @@ public class CannaCraft {
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(CannacraftBlocks.GROW_TENT);
+            event.accept(CannacraftBlocks.EXTRACTOR);
         }
     }
 
@@ -88,7 +92,10 @@ public class CannaCraft {
     static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
-
+            net.minecraft.client.gui.screens.MenuScreens.register(
+                    CannacraftMenus.EXTRACTOR.get(),
+                    net.monkeyman42001.cannacraft.client.screen.ExtractorScreen::new
+            );
         }
     }
 }

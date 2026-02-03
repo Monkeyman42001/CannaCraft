@@ -21,12 +21,14 @@ public class CannacraftItems {
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(CannaCraft.MOD_ID);
 	public static final DeferredItem<Item> CANNABIS_SEED;
 	public static final DeferredItem<Item> NUG;
+	public static final DeferredItem<Item> EXTRACT;
 	public static final DeferredItem<Item> JOINT;
 	public static final DeferredItem<Item> LIGHTER;
 	public static final DeferredItem<Item> LIT_JOINT;
 	static {
 		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new CannabisSeedItem(new Item.Properties()));
 		NUG = ITEMS.register("nug", () -> new NugItem(new Item.Properties()));
+		EXTRACT = ITEMS.register("extract", () -> new ExtractItem(new Item.Properties().stacksTo(16)));
 		JOINT = ITEMS.register("joint", () -> new JointItem(new Item.Properties()));
 		LIGHTER = ITEMS.register("lighter", () -> new LighterItem(new Item.Properties().durability(100)));
 		LIT_JOINT = ITEMS.register("lit_joint", () -> new LitJointItem(new Item.Properties()));

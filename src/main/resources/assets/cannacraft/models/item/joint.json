@@ -3,12 +3,12 @@
   "textures": {
     "layer0": "cannacraft:item/jointtexture"
   },
-  "display": {
-    "firstperson_lefthand": {
-      "scale": [-1, 1, 1]
-    },
-    "thirdperson_lefthand": {
-      "scale": [-1, 1, 1]
+  "overrides": [
+    {
+      "predicate": {
+        "cannacraft:left_hand": 1.0
+      },
+      "model": "cannacraft:item/joint_left"
     }
-  }
+  ]
 }

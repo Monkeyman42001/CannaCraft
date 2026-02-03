@@ -1,6 +1,8 @@
 package net.monkeyman42001.cannacraft;
 
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
@@ -94,6 +96,16 @@ public class CannaCraft {
     static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
+            event.enqueueWork(() -> ItemProperties.register(
+                CannacraftItems.LIT_JOINT.get(),
+                ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "left_hand"),
+                (stack, level, entity, seed) -> (entity != null && entity.getOffhandItem() == stack) ? 1.0F : 0.0F
+            ));
+            event.enqueueWork(() -> ItemProperties.register(
+                CannacraftItems.JOINT.get(),
+                ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "left_hand"),
+                (stack, level, entity, seed) -> (entity != null && entity.getOffhandItem() == stack) ? 1.0F : 0.0F
+            ));
         }
 
         @SubscribeEvent

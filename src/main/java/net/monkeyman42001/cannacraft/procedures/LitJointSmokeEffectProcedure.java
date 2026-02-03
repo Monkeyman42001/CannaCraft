@@ -14,21 +14,18 @@ public class LitJointSmokeEffectProcedure {
 			return;
 		if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
 			Strain strain = itemstack.get(CannacraftDataComponents.STRAIN.get());
-			String name = strain != null ? strain.name() : "";
-
-			MobEffectInstance effect;
-			switch (name) {
-				case "Sour Diesel" -> effect = new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600, 1);
-				case "Blue Dream" -> effect = new MobEffectInstance(MobEffects.JUMP, 600, 1);
-				case "OG Kush" -> effect = new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600, 0);
-				case "Girl Scout Cookies" -> effect = new MobEffectInstance(MobEffects.REGENERATION, 400, 0);
-				case "Gelato" -> effect = new MobEffectInstance(MobEffects.ABSORPTION, 600, 1);
-				case "Gorilla Glue" -> effect = new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0);
-				case "Granddaddy Purple" -> effect = new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 0);
-				default -> effect = new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 0);
+			if (strain == null) {
+				living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 0));
+				return;
 			}
-
-			living.addEffect(effect);
+			var effects = strain.createEffectInstances();
+			if (effects.isEmpty()) {
+				living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 0));
+				return;
+			}
+			for (var effect : effects) {
+				living.addEffect(effect);
+			}
 		}
 	}
 }

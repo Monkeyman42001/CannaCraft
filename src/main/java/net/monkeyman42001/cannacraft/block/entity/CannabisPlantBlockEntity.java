@@ -3,6 +3,8 @@ package net.monkeyman42001.cannacraft.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
@@ -28,22 +30,28 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.saveAdditional(tag, provider);
 		if (strain != null) {
-			tag.putString("strain_name", strain.name());
-			tag.putFloat("strain_thc", strain.thcPercentage());
-			tag.putFloat("strain_terpene", strain.terpenePercentage());
-			tag.putInt("strain_color", strain.colorRgb());
+			Strain.CODEC.encodeStart(NbtOps.INSTANCE, strain)
+					.result()
+					.ifPresent(value -> tag.put("strain", (Tag) value));
 		}
 	}
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.loadAdditional(tag, provider);
+		if (tag.contains("strain")) {
+			Tag strainTag = tag.get("strain");
+			if (strainTag != null) {
+				this.strain = Strain.CODEC.parse(NbtOps.INSTANCE, strainTag).result().orElse(null);
+				return;
+			}
+		}
 		if (tag.contains("strain_name")) {
 			String name = tag.getString("strain_name");
 			float thc = tag.getFloat("strain_thc");
 			float terpene = tag.getFloat("strain_terpene");
 			int color = tag.contains("strain_color") ? tag.getInt("strain_color") : 0xFFFFFF;
-			this.strain = new Strain(name, thc, terpene, color);
+			this.strain = Strain.fromLegacy(name, thc, terpene, color);
 		} else {
 			this.strain = null;
 		}

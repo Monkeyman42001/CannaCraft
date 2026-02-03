@@ -21,6 +21,7 @@ import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.component.Strain;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.monkeyman42001.cannacraft.menu.ExtractorMenu;
+import java.util.Objects;
 
 public class ExtractorBlockEntity extends BlockEntity implements Container, MenuProvider {
 	public static final int SLOT_INPUT = 0;
@@ -75,7 +76,8 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 		boolean canProcess = !input.isEmpty()
 				&& input.getItem() == CannacraftItems.NUG.get()
 				&& bottle.is(Items.GLASS_BOTTLE)
-				&& canOutputAccept(output, input);
+				&& bottle.getCount() >= 1
+				&& canAcceptOutput(output, input);
 
 		if (!canProcess) {
 			if (cookTime != 0) {
@@ -97,23 +99,11 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 		setChanged();
 	}
 
-	private boolean canOutputAccept(ItemStack output, ItemStack input) {
-		if (output.isEmpty()) {
-			return true;
-		}
-		if (output.getItem() != CannacraftItems.EXTRACT.get() || output.getCount() >= output.getMaxStackSize()) {
-			return false;
-		}
-		Strain inputStrain = input.get(CannacraftDataComponents.STRAIN.get());
-		Strain outputStrain = output.get(CannacraftDataComponents.STRAIN.get());
-		return inputStrain == null ? outputStrain == null : inputStrain.equals(outputStrain);
-	}
-
 	private void craftItem() {
 		ItemStack input = items.get(SLOT_INPUT);
 		ItemStack bottle = items.get(SLOT_BOTTLE);
 		ItemStack output = items.get(SLOT_OUTPUT);
-		if (input.isEmpty() || !bottle.is(Items.GLASS_BOTTLE) || !canOutputAccept(output, input)) {
+		if (input.isEmpty() || !bottle.is(Items.GLASS_BOTTLE) || bottle.getCount() < 1 || !canAcceptOutput(output, input)) {
 			return;
 		}
 
@@ -125,12 +115,29 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 
 		input.shrink(1);
 		bottle.shrink(1);
-
+		if (bottle.isEmpty()) {
+			items.set(SLOT_BOTTLE, ItemStack.EMPTY);
+		}
 		if (output.isEmpty()) {
 			items.set(SLOT_OUTPUT, result);
 		} else {
-			output.grow(1);
+			output.grow(result.getCount());
 		}
+	}
+
+	private boolean canAcceptOutput(ItemStack output, ItemStack input) {
+		if (output.isEmpty()) {
+			return true;
+		}
+		if (!output.is(CannacraftItems.EXTRACT.get())) {
+			return false;
+		}
+		if (output.getCount() >= output.getMaxStackSize()) {
+			return false;
+		}
+		Strain outputStrain = output.get(CannacraftDataComponents.STRAIN.get());
+		Strain inputStrain = input.get(CannacraftDataComponents.STRAIN.get());
+		return Objects.equals(outputStrain, inputStrain);
 	}
 
 	@Override

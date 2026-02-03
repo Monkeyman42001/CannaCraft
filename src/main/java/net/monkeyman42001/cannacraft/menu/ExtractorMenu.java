@@ -9,7 +9,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
-import net.monkeyman42001.cannacraft.menu.slot.ExtractorResultSlot;
 import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 
@@ -58,7 +57,7 @@ public class ExtractorMenu extends AbstractContainerMenu {
 				return stack.is(Items.GLASS_BOTTLE);
 			}
 		});
-		addSlot(new ExtractorResultSlot(container, SLOT_OUTPUT, 116, 35));
+		addSlot(new net.monkeyman42001.cannacraft.menu.slot.ExtractorResultSlot(container, SLOT_OUTPUT, 116, 35));
 	}
 
 	private void addPlayerSlots(Inventory playerInventory) {
@@ -107,7 +106,7 @@ public class ExtractorMenu extends AbstractContainerMenu {
 			ItemStack stack = slot.getItem();
 			itemstack = stack.copy();
 			if (index == SLOT_OUTPUT) {
-				if (!moveItemStackTo(stack, INV_START, HOTBAR_END, true)) {
+				if (!moveItemStackTo(stack, INV_START, HOTBAR_END, false)) {
 					return ItemStack.EMPTY;
 				}
 				slot.onQuickCraft(stack, itemstack);
@@ -118,6 +117,10 @@ public class ExtractorMenu extends AbstractContainerMenu {
 					}
 				} else if (stack.is(Items.GLASS_BOTTLE)) {
 					if (!moveItemStackTo(stack, SLOT_BOTTLE, SLOT_BOTTLE + 1, false)) {
+						return ItemStack.EMPTY;
+					}
+				} else if (stack.getItem() == CannacraftItems.EXTRACT.get()) {
+					if (!moveItemStackTo(stack, INV_START, HOTBAR_END, false)) {
 						return ItemStack.EMPTY;
 					}
 				} else if (index < HOTBAR_START) {

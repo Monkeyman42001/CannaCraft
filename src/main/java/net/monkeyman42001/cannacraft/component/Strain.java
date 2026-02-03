@@ -32,6 +32,9 @@ public record Strain(String name, float thcPercentage, float terpenePercentage, 
 			new Strain("Gelato", 18.7f, 1.0f, 0xC9A0FF),
 			new Strain("Gorilla Glue", 21.3f, 1.53f, 0x7A7A7A),
 			new Strain("Granddaddy Purple", 20.0f, 1.07f, 0x6B2A9B)
+			//new Strain("Cinderella 99")
+			//lemon skunk
+			//Skywalker OG
 	};
 
 	public Component coloredName() {

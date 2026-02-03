@@ -59,6 +59,23 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
 		if (lit <= 0) {
 			return;
 		}
-		guiGraphics.fill(x, y + 12 - lit, x + 14, y + 13, 0xFFB86B00);
+		int height = Math.min(13, lit);
+		int baseStartY = y + 13 - height;
+
+		// Base (full width)
+		int baseHeight = Math.min(5, height);
+		guiGraphics.fill(x, y + 13 - baseHeight, x + 14, y + 13, 0xFFB86B00);
+
+		// Mid (narrower)
+		int midHeight = Math.min(4, Math.max(0, height - baseHeight));
+		if (midHeight > 0) {
+			guiGraphics.fill(x + 2, y + 13 - baseHeight - midHeight, x + 12, y + 13 - baseHeight, 0xFFB86B00);
+		}
+
+		// Top (tip)
+		int topHeight = Math.min(4, Math.max(0, height - baseHeight - midHeight));
+		if (topHeight > 0) {
+			guiGraphics.fill(x + 4, baseStartY, x + 10, baseStartY + topHeight, 0xFFB86B00);
+		}
 	}
 }

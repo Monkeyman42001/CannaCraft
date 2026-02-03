@@ -14,6 +14,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 
 import net.monkeyman42001.cannacraft.block.entity.CannabisPlantBlockEntity;
 import net.monkeyman42001.cannacraft.block.entity.ExtractorBlockEntity;
+import net.monkeyman42001.cannacraft.block.entity.GrowTentBlockEntity;
 import net.monkeyman42001.cannacraft.CannaCraft;
 
 public class CannacraftModBlockEntities {
@@ -22,6 +23,8 @@ public class CannacraftModBlockEntities {
 			register("cannabis_plant", CannacraftBlocks.CANNABIS_PLANT, CannabisPlantBlockEntity::new);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ExtractorBlockEntity>> EXTRACTOR =
 			register("extractor", CannacraftBlocks.EXTRACTOR, ExtractorBlockEntity::new);
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowTentBlockEntity>> GROW_TENT =
+			register("grow_tent", CannacraftBlocks.GROW_TENT, GrowTentBlockEntity::new);
 
 	// Start of user code block custom block entities
 	// End of user code block custom block entities

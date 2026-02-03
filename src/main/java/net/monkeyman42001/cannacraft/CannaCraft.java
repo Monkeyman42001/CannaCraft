@@ -111,6 +111,7 @@ public class CannaCraft {
         @SubscribeEvent
         static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
             event.register(CannacraftMenus.EXTRACTOR.get(), net.monkeyman42001.cannacraft.client.screen.ExtractorScreen::new);
+            event.register(CannacraftMenus.GROW_TENT.get(), net.monkeyman42001.cannacraft.client.screen.GrowTentScreen::new);
         }
     }
 }

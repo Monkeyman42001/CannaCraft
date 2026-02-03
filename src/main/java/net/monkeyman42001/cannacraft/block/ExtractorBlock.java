@@ -2,7 +2,6 @@ package net.monkeyman42001.cannacraft.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +13,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.NetworkHooks;
 import net.monkeyman42001.cannacraft.block.entity.ExtractorBlockEntity;
 
 public class ExtractorBlock extends Block implements EntityBlock {
@@ -23,13 +21,13 @@ public class ExtractorBlock extends Block implements EntityBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (level.isClientSide()) {
 			return InteractionResult.SUCCESS;
 		}
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		if (blockEntity instanceof MenuProvider menuProvider && player instanceof ServerPlayer serverPlayer) {
-			NetworkHooks.openScreen(serverPlayer, menuProvider, pos);
+			serverPlayer.openMenu(menuProvider, buf -> buf.writeBlockPos(pos));
 		}
 		return InteractionResult.CONSUME;
 	}

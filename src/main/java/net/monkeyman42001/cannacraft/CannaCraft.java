@@ -19,6 +19,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -92,10 +93,11 @@ public class CannaCraft {
     static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
-            net.minecraft.client.gui.screens.MenuScreens.register(
-                    CannacraftMenus.EXTRACTOR.get(),
-                    net.monkeyman42001.cannacraft.client.screen.ExtractorScreen::new
-            );
+        }
+
+        @SubscribeEvent
+        static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
+            event.register(CannacraftMenus.EXTRACTOR.get(), net.monkeyman42001.cannacraft.client.screen.ExtractorScreen::new);
         }
     }
 }

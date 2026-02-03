@@ -11,6 +11,7 @@ import net.minecraft.world.item.Items;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.monkeyman42001.cannacraft.menu.slot.ExtractorResultSlot;
 import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public class ExtractorMenu extends AbstractContainerMenu {
 	private static final int SLOT_INPUT = 0;
@@ -30,6 +31,21 @@ public class ExtractorMenu extends AbstractContainerMenu {
 		this.container = container;
 		this.data = data;
 
+		addExtractorSlots();
+		addPlayerSlots(playerInventory);
+		addDataSlots(data);
+	}
+
+	public ExtractorMenu(int id, Inventory playerInventory) {
+		this(id, playerInventory, new net.minecraft.world.SimpleContainer(SLOT_COUNT), new net.minecraft.world.inventory.SimpleContainerData(4));
+	}
+
+	public ExtractorMenu(int id, Inventory playerInventory, RegistryFriendlyByteBuf buf) {
+		this(id, playerInventory, new net.minecraft.world.SimpleContainer(SLOT_COUNT), new net.minecraft.world.inventory.SimpleContainerData(4));
+		buf.readBlockPos();
+	}
+
+	private void addExtractorSlots() {
 		addSlot(new Slot(container, SLOT_INPUT, 56, 17) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
@@ -43,7 +59,9 @@ public class ExtractorMenu extends AbstractContainerMenu {
 			}
 		});
 		addSlot(new ExtractorResultSlot(container, SLOT_OUTPUT, 116, 35));
+	}
 
+	private void addPlayerSlots(Inventory playerInventory) {
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 9; col++) {
 				addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
@@ -52,12 +70,6 @@ public class ExtractorMenu extends AbstractContainerMenu {
 		for (int col = 0; col < 9; col++) {
 			addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
 		}
-
-		addDataSlots(data);
-	}
-
-	public ExtractorMenu(int id, Inventory playerInventory) {
-		this(id, playerInventory, new net.minecraft.world.SimpleContainer(SLOT_COUNT), new net.minecraft.world.inventory.SimpleContainerData(2));
 	}
 
 	@Override
@@ -66,12 +78,25 @@ public class ExtractorMenu extends AbstractContainerMenu {
 	}
 
 	public int getCookProgressScaled(int pixels) {
-		int cookTime = data.get(0);
-		int cookTotal = data.get(1);
+		int cookTime = data.get(2);
+		int cookTotal = data.get(3);
 		if (cookTotal == 0 || cookTime == 0) {
 			return 0;
 		}
 		return cookTime * pixels / cookTotal;
+	}
+
+	public boolean isCooking() {
+		return data.get(2) > 0;
+	}
+
+	public int getLitProgressScaled(int pixels) {
+		int lit = data.get(0);
+		int litTotal = data.get(1);
+		if (litTotal == 0 || lit == 0) {
+			return 0;
+		}
+		return lit * pixels / litTotal;
 	}
 
 	@Override

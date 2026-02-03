@@ -27,30 +27,39 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 	public static final int SLOT_BOTTLE = 1;
 	public static final int SLOT_OUTPUT = 2;
 	private static final int COOK_TIME_TOTAL = 200;
+	private static final int LIT_TIME_TOTAL = 200;
 
 	private final NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
 	private int cookTime;
+	private int litTime;
+	private int litDuration;
 
 	private final ContainerData dataAccess = new ContainerData() {
 		@Override
 		public int get(int index) {
 			return switch (index) {
-				case 0 -> cookTime;
-				case 1 -> COOK_TIME_TOTAL;
+				case 0 -> litTime;
+				case 1 -> litDuration;
+				case 2 -> cookTime;
+				case 3 -> COOK_TIME_TOTAL;
 				default -> 0;
 			};
 		}
 
 		@Override
 		public void set(int index, int value) {
-			if (index == 0) {
-				cookTime = value;
+			switch (index) {
+				case 0 -> litTime = value;
+				case 1 -> litDuration = value;
+				case 2 -> cookTime = value;
+				default -> {
+				}
 			}
 		}
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 4;
 		}
 	};
 
@@ -71,11 +80,15 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 		if (!canProcess) {
 			if (cookTime != 0) {
 				cookTime = 0;
-				setChanged();
 			}
+			litTime = 0;
+			litDuration = 0;
+			setChanged();
 			return;
 		}
 
+		litTime = LIT_TIME_TOTAL;
+		litDuration = LIT_TIME_TOTAL;
 		cookTime++;
 		if (cookTime >= COOK_TIME_TOTAL) {
 			cookTime = 0;
@@ -125,6 +138,8 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 		super.saveAdditional(tag, provider);
 		ContainerHelper.saveAllItems(tag, items, provider);
 		tag.putInt("CookTime", cookTime);
+		tag.putInt("LitTime", litTime);
+		tag.putInt("LitDuration", litDuration);
 	}
 
 	@Override
@@ -132,6 +147,8 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 		super.loadAdditional(tag, provider);
 		ContainerHelper.loadAllItems(tag, items, provider);
 		cookTime = tag.getInt("CookTime");
+		litTime = tag.getInt("LitTime");
+		litDuration = tag.getInt("LitDuration");
 	}
 
 	@Override
@@ -142,6 +159,10 @@ public class ExtractorBlockEntity extends BlockEntity implements Container, Menu
 	@Override
 	public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
 		return new ExtractorMenu(id, inventory, this, dataAccess);
+	}
+
+	public ContainerData getDataAccess() {
+		return dataAccess;
 	}
 
 	@Override

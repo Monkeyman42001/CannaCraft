@@ -49,7 +49,7 @@ public class LitJointItem extends Item {
 	@Override
 	public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
 		ItemStack retval = super.finishUsingItem(itemstack, world, entity);
-		LitJointSmokeEffectProcedure.execute(entity);
+		LitJointSmokeEffectProcedure.execute(entity, itemstack);
 		return retval;
 	}
 

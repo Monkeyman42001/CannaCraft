@@ -40,6 +40,16 @@ public class JointItem extends Smokable {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		ItemStack stack = entity.getItemInHand(hand);
+		if (entity.isShiftKeyDown() && isLit(stack)) {
+			if (!world.isClientSide) {
+				setLit(stack, false);
+				ItemStack otherHand = entity.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
+				if (otherHand.getItem() == this && isLit(otherHand)) {
+					setLit(otherHand, false);
+				}
+			}
+			return InteractionResultHolder.sidedSuccess(stack, world.isClientSide);
+		}
 		if (!isLit(stack)) {
 			return InteractionResultHolder.pass(stack);
 		}

@@ -10,6 +10,11 @@ import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.component.Strain;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 @EventBusSubscriber(modid = CannaCraft.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class CannacraftCraftingEvents {
 	@SubscribeEvent
@@ -20,19 +25,21 @@ public class CannacraftCraftingEvents {
 		}
 
 		Container inventory = event.getInventory();
-		Strain strain = null;
+		Map<String, Strain> uniqueStrains = new LinkedHashMap<>();
 		for (int i = 0; i < inventory.getContainerSize(); i++) {
 			ItemStack stack = inventory.getItem(i);
 			if (stack.getItem() == CannacraftItems.NUG.get()) {
-				strain = stack.get(CannacraftDataComponents.STRAIN.get());
-				if (strain != null) {
-					break;
+				Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
+				if (strain != null && !strain.name().isBlank()) {
+					uniqueStrains.putIfAbsent(strain.name(), strain);
 				}
 			}
 		}
 
-		if (strain != null) {
-			result.set(CannacraftDataComponents.STRAIN.get(), strain);
+		if (!uniqueStrains.isEmpty()) {
+			List<Strain> hodgepodge = new ArrayList<>(uniqueStrains.values());
+			result.set(CannacraftDataComponents.HODGEPODGE.get(), hodgepodge);
+			result.set(CannacraftDataComponents.STRAIN.get(), hodgepodge.get(0));
 		}
 	}
 }

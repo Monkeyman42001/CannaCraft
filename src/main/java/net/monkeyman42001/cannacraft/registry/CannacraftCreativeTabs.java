@@ -27,7 +27,6 @@ public class CannacraftCreativeTabs {
 						output.accept(withStrain(CannacraftItems.NUG.get(), defaultStrain));
 						output.accept(withStrain(CannacraftItems.EXTRACT.get(), defaultStrain));
 						output.accept(withStrain(CannacraftItems.JOINT.get(), defaultStrain));
-						output.accept(withStrain(CannacraftItems.LIT_JOINT.get(), defaultStrain));
 						output.accept(CannacraftItems.LIGHTER.get());
 						output.accept(CannacraftItems.MATCHBOX.get());
 						output.accept(CannacraftBlocks.GROW_TENT.get());

@@ -6,9 +6,22 @@
   "overrides": [
     {
       "predicate": {
+        "cannacraft:lit": 1.0
+      },
+      "model": "cannacraft:item/lit_joint"
+    },
+    {
+      "predicate": {
         "cannacraft:left_hand": 1.0
       },
       "model": "cannacraft:item/joint_left"
+    },
+    {
+      "predicate": {
+        "cannacraft:lit": 1.0,
+        "cannacraft:left_hand": 1.0
+      },
+      "model": "cannacraft:item/lit_joint_left"
     }
   ]
 }

@@ -73,19 +73,31 @@ public class CannaCraft {
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = CannaCraft.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     static class ClientModEvents {
-        @SubscribeEvent
-        static void onClientSetup(FMLClientSetupEvent event) {
-            event.enqueueWork(() -> ItemProperties.register(
-                CannacraftItems.LIT_JOINT.get(),
-                ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "left_hand"),
-                (stack, level, entity, seed) -> (entity != null && ItemStack.isSameItemSameComponents(entity.getOffhandItem(), stack)) ? 1.0F : 0.0F
-            ));
-            event.enqueueWork(() -> ItemProperties.register(
-                CannacraftItems.JOINT.get(),
-                ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "left_hand"),
-                (stack, level, entity, seed) -> (entity != null && ItemStack.isSameItemSameComponents(entity.getOffhandItem(), stack)) ? 1.0F : 0.0F
-            ));
-        }
+		@SubscribeEvent
+		static void onClientSetup(FMLClientSetupEvent event) {
+			event.enqueueWork(() -> ItemProperties.register(
+				CannacraftItems.JOINT.get(),
+				ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "left_hand"),
+				(stack, level, entity, seed) -> {
+					if (entity == null) {
+						return 0.0F;
+					}
+					ItemStack offhand = entity.getOffhandItem();
+					ItemStack mainhand = entity.getMainHandItem();
+					boolean offhandItemMatch = ItemStack.isSameItem(offhand, stack);
+					boolean mainhandItemMatch = ItemStack.isSameItem(mainhand, stack);
+					if (offhandItemMatch && mainhandItemMatch) {
+						return (stack == offhand) ? 1.0F : 0.0F;
+					}
+					return offhandItemMatch ? 1.0F : 0.0F;
+				}
+			));
+			event.enqueueWork(() -> ItemProperties.register(
+				CannacraftItems.JOINT.get(),
+				ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "lit"),
+				(stack, level, entity, seed) -> net.monkeyman42001.cannacraft.item.Smokable.isLit(stack) ? 1.0F : 0.0F
+			));
+		}
 
         @SubscribeEvent
         static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {

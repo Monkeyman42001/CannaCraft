@@ -124,11 +124,11 @@ public record Strain(
 	);
 
 	public static final Strain[] DEFAULT_STRAINS = new Strain[] {
-			new Strain("Sour Diesel", 19.0f, 1.6f, 0xE6E04B,
+			new Strain("Sour Diesel", 19.0f, 1.60f, 0xE6E04B,
 					new TradeInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "emerald"), 1, 16, 2, 0.05F, 1),
 					List.of(new EffectInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "speed"), 600, 1, false, true, true))),
 
-			new Strain("Blue Dream", 19.2f, 1.9f, 0x4AA3FF,
+			new Strain("Blue Dream", 19.2f, 1.90f, 0x4AA3FF,
 					new TradeInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "wheat"), 1, 16, 2, 0.05F, 1),
 					List.of(new EffectInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "jump_boost"), 600, 1, false, true, true))),
 
@@ -136,11 +136,11 @@ public record Strain(
 					new TradeInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "diamond"), 1, 12, 5, 0.10F, 1),
 					List.of(new EffectInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "resistance"), 600, 0, false, true, true))),
 
-			new Strain("Girl Scout Cookies", 19.1f, 1.4f, 0xD4A846,
+			new Strain("Girl Scout Cookies", 19.1f, 1.40f, 0xD4A846,
 					new TradeInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "emerald"), 2, 12, 5, 0.08F, 2),
 					List.of(new EffectInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "regeneration"), 400, 0, false, true, true))),
 
-			new Strain("Gelato", 18.7f, 1.0f, 0xC9A0FF,
+			new Strain("Gelato", 18.7f, 1.00f, 0xC9A0FF,
 					new TradeInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "emerald"), 3, 12, 5, 0.08F, 2),
 					List.of(new EffectInfo(ResourceLocation.fromNamespaceAndPath("minecraft", "absorption"), 600, 1, false, true, true))),
 

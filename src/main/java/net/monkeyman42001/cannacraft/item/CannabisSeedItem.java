@@ -11,14 +11,17 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.client.gui.screens.Screen;
 
 import net.monkeyman42001.cannacraft.block.CannabisPlantBlock;
 import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.monkeyman42001.cannacraft.block.entity.CannabisPlantBlockEntity;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
+import net.monkeyman42001.cannacraft.component.LineageNode;
 import net.monkeyman42001.cannacraft.component.Strain;
 
 import java.util.List;
+import java.util.Locale;
 
 public class CannabisSeedItem extends Item {
 
@@ -38,6 +41,14 @@ public class CannabisSeedItem extends Item {
         return stack.get(CannacraftDataComponents.STRAIN.get());
     }
 
+    public static void setLineage(ItemStack stack, LineageNode lineage) {
+        stack.set(CannacraftDataComponents.LINEAGE.get(), lineage);
+    }
+
+    public static LineageNode getLineage(ItemStack stack) {
+        return stack.get(CannacraftDataComponents.LINEAGE.get());
+    }
+
     /* =======================
        TOOLTIP (MCreator quirk)
        ======================= */
@@ -48,10 +59,43 @@ public class CannabisSeedItem extends Item {
         Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
         if (strain != null && !strain.name().isBlank()) {
             tooltipComponents.add(Component.literal("Strain: ").append(strain.coloredName()));
-            tooltipComponents.add(Component.literal("THC %: " + strain.thcPercentage()));
-            tooltipComponents.add(Component.literal("Terpene %: " + strain.terpenePercentage()));
+            tooltipComponents.add(Component.literal("THC %: " + formatThc(strain.thcPercentage())));
+            tooltipComponents.add(Component.literal("Terpene %: " + formatTerpene(strain.terpenePercentage())));
+            LineageNode lineage = getLineage(stack);
+            if (lineage != null) {
+                if (Screen.hasShiftDown() && Screen.hasControlDown()) {
+                    tooltipComponents.add(Component.literal("Lineage:"));
+                    appendLineageTree(lineage, tooltipComponents);
+                } else {
+                    tooltipComponents.add(Component.literal("Hold Shift + Ctrl to show lineage"));
+                }
+            }
         } else {
             tooltipComponents.add(Component.literal("Strain: Unknown"));
+        }
+    }
+
+    private static String formatThc(float value) {
+        return String.format(Locale.US, "%.1f", value);
+    }
+
+    private static String formatTerpene(float value) {
+        return String.format(Locale.US, "%.2f", value);
+    }
+
+    private static void appendLineageTree(LineageNode node, List<Component> tooltipComponents) {
+        tooltipComponents.add(Component.literal(node.name()));
+        appendLineageChildren(node.parents(), tooltipComponents, "");
+    }
+
+    private static void appendLineageChildren(List<LineageNode> nodes, List<Component> tooltipComponents, String prefix) {
+        for (int i = 0; i < nodes.size(); i++) {
+            LineageNode node = nodes.get(i);
+            boolean isLast = i == nodes.size() - 1;
+            String connector = isLast ? "`- " : "|- ";
+            tooltipComponents.add(Component.literal(prefix + connector + node.name()));
+            String childPrefix = prefix + (isLast ? "   " : "|  ");
+            appendLineageChildren(node.parents(), tooltipComponents, childPrefix);
         }
     }
 

@@ -65,6 +65,9 @@ public class GrowTentScreen extends AbstractContainerScreen<GrowTentMenu> {
 
 	@Override
 	public boolean keyPressed(int key, int scanCode, int modifiers) {
+		if (nameBox != null && nameBox.isFocused() && minecraft != null && minecraft.options.keyInventory.matches(key, scanCode)) {
+			return true;
+		}
 		if (nameBox != null && nameBox.keyPressed(key, scanCode, modifiers)) {
 			return true;
 		}

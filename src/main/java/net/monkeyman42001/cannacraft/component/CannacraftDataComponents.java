@@ -5,6 +5,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -16,7 +17,8 @@ import java.util.List;
 
 public class CannacraftDataComponents {
 
-	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(CannaCraft.MOD_ID);
+	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES =
+		DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, CannaCraft.MOD_ID);
 	private static final StreamCodec<RegistryFriendlyByteBuf, List<Strain>> STRAIN_LIST_STREAM_CODEC = new StreamCodec<>() {
 		@Override
 		public List<Strain> decode(RegistryFriendlyByteBuf buf) {
@@ -51,6 +53,14 @@ public class CannacraftDataComponents {
 			() -> DataComponentType.<java.util.List<Strain>>builder()
 				.persistent(Strain.CODEC.listOf())
 				.networkSynchronized(STRAIN_LIST_STREAM_CODEC)
+				.build()
+		);
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<LineageNode>> LINEAGE =
+		DATA_COMPONENT_TYPES.register(
+			"lineage",
+			() -> DataComponentType.<LineageNode>builder()
+				.persistent(LineageNode.CODEC)
+				.networkSynchronized(LineageNode.STREAM_CODEC)
 				.build()
 		);
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> LIT =

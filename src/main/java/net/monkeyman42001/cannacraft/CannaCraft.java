@@ -6,7 +6,9 @@ import net.minecraft.world.item.ItemStack;
 import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
+import net.monkeyman42001.cannacraft.event.CannacraftCraftingEvents;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
+import net.monkeyman42001.cannacraft.network.CannacraftNetworking;
 import net.monkeyman42001.cannacraft.registry.CannacraftCreativeTabs;
 import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
@@ -14,13 +16,11 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -56,6 +56,11 @@ public class CannaCraft {
         CannacraftMenus.register(modEventBus);
         CannacraftModVillagers.register(modEventBus);
 
+        modEventBus.addListener(CannacraftNetworking::registerPayloadHandlers);
+        modEventBus.addListener(ClientModEvents::onClientSetup);
+        modEventBus.addListener(ClientModEvents::onRegisterMenuScreens);
+        NeoForge.EVENT_BUS.addListener(CannacraftCraftingEvents::onItemCrafted);
+
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -71,7 +76,6 @@ public class CannaCraft {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = CannaCraft.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     static class ClientModEvents {
 		@SubscribeEvent
 		static void onClientSetup(FMLClientSetupEvent event) {

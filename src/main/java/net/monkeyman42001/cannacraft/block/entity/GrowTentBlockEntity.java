@@ -164,16 +164,57 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 			return ItemStack.EMPTY;
 		}
 
+		var leftLineage = net.monkeyman42001.cannacraft.item.CannabisSeedItem.getLineage(left);
+		var rightLineage = net.monkeyman42001.cannacraft.item.CannabisSeedItem.getLineage(right);
+		net.monkeyman42001.cannacraft.component.LineageNode leftNode = leftLineage == null
+				? new net.monkeyman42001.cannacraft.component.LineageNode(leftStrain.name(), java.util.List.of())
+				: leftLineage;
+		net.monkeyman42001.cannacraft.component.LineageNode rightNode = rightLineage == null
+				? new net.monkeyman42001.cannacraft.component.LineageNode(rightStrain.name(), java.util.List.of())
+				: rightLineage;
+		int generation = Math.max(leftNode.depth(), rightNode.depth()) + 1;
+
+		float baseThc = lerp(leftStrain.thcPercentage(), rightStrain.thcPercentage(), 0.4f);
+		float baseTerpene = lerp(leftStrain.terpenePercentage(), rightStrain.terpenePercentage(), 0.4f);
+		float gainFactor = Math.min(0.05f + (generation * 0.005f), 0.20f);
+
+		float newThc = roundToTenth(applyGain(baseThc, 30.0f, gainFactor));
+		float newTerpene = roundToHundredth(applyGain(baseTerpene, 3.0f, gainFactor));
+
 		var newStrain = new net.monkeyman42001.cannacraft.component.Strain(
 				breedName,
-				leftStrain.thcPercentage(),
-				leftStrain.terpenePercentage(),
+				newThc,
+				newTerpene,
 				leftStrain.colorRgb(),
 				leftStrain.trade(),
 				leftStrain.effects()
 		);
 		ItemStack result = new ItemStack(net.monkeyman42001.cannacraft.item.CannacraftItems.CANNABIS_SEED.get());
 		net.monkeyman42001.cannacraft.item.CannabisSeedItem.setStrain(result, newStrain);
+		net.monkeyman42001.cannacraft.item.CannabisSeedItem.setLineage(result, buildLineageTree(leftNode, rightNode));
 		return result;
+	}
+
+	private static float lerp(float start, float end, float factor) {
+		return start + (end - start) * factor;
+	}
+
+	private static float applyGain(float baseValue, float capValue, float gainFactor) {
+		return baseValue + (capValue - baseValue) * gainFactor;
+	}
+
+	private static float roundToTenth(float value) {
+		return Math.round(value * 10.0f) / 10.0f;
+	}
+
+	private static float roundToHundredth(float value) {
+		return Math.round(value * 100.0f) / 100.0f;
+	}
+
+	private net.monkeyman42001.cannacraft.component.LineageNode buildLineageTree(
+			net.monkeyman42001.cannacraft.component.LineageNode leftNode,
+			net.monkeyman42001.cannacraft.component.LineageNode rightNode
+	) {
+		return new net.monkeyman42001.cannacraft.component.LineageNode(breedName, java.util.List.of(leftNode, rightNode));
 	}
 }

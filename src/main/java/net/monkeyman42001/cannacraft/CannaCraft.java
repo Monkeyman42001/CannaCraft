@@ -7,8 +7,8 @@ import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.event.CannacraftCraftingEvents;
+import net.monkeyman42001.cannacraft.event.CannacraftEvents;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
-import net.monkeyman42001.cannacraft.network.CannacraftNetworking;
 import net.monkeyman42001.cannacraft.registry.CannacraftCreativeTabs;
 import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
 import net.monkeyman42001.cannacraft.registry.CannacraftRecipeSerializers;
@@ -58,10 +58,10 @@ public class CannaCraft {
         CannacraftRecipeSerializers.register(modEventBus);
         CannacraftModVillagers.register(modEventBus);
 
-        modEventBus.addListener(CannacraftNetworking::registerPayloadHandlers);
         modEventBus.addListener(ClientModEvents::onClientSetup);
         modEventBus.addListener(ClientModEvents::onRegisterMenuScreens);
         NeoForge.EVENT_BUS.addListener(CannacraftCraftingEvents::onItemCrafted);
+        NeoForge.EVENT_BUS.addListener(CannacraftEvents::addCustomTrades);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

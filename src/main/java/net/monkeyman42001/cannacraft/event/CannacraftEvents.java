@@ -7,17 +7,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.monkeyman42001.cannacraft.CannaCraft;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.monkeyman42001.cannacraft.villager.CannacraftModTrades;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = CannaCraft.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class CannacraftEvents {
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {

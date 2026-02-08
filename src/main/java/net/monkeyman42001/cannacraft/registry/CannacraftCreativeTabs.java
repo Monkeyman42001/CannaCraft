@@ -22,7 +22,7 @@ public class CannacraftCreativeTabs {
 					.title(Component.translatable("itemGroup.cannacraft"))
 					.icon(() -> new ItemStack(CannacraftItems.NUG.get()))
 					.displayItems((parameters, output) -> {
-						Strain defaultStrain = Strain.DEFAULT_STRAINS[0];
+					Strain defaultStrain = Strain.STARTER_STRAINS[0];
 						output.accept(withStrain(CannacraftItems.CANNABIS_SEED.get(), defaultStrain));
 						output.accept(withStrain(CannacraftItems.NUG.get(), defaultStrain));
 						output.accept(withStrain(CannacraftItems.GROUND_CANNABIS.get(), defaultStrain));

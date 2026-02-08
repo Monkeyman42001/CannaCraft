@@ -23,9 +23,7 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 	private static final int SLOT_SEED_RIGHT = 1;
 	private static final int SLOT_OUTPUT = 2;
 	private static final int SLOT_COUNT = 3;
-	private static final String TAG_BREED_NAME = "BreedName";
 	private final NonNullList<ItemStack> items = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
-	private String breedName = "";
 	private boolean updatingOutput;
 
 	public GrowTentBlockEntity(BlockPos pos, BlockState state) {
@@ -36,14 +34,12 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.saveAdditional(tag, provider);
 		ContainerHelper.saveAllItems(tag, items, provider);
-		tag.putString(TAG_BREED_NAME, breedName);
 	}
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.loadAdditional(tag, provider);
 		ContainerHelper.loadAllItems(tag, items, provider);
-		breedName = tag.getString(TAG_BREED_NAME);
 	}
 
 	@Override
@@ -116,18 +112,6 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 		items.clear();
 	}
 
-	public void setBreedName(String name) {
-		String trimmed = name == null ? "" : name.trim();
-		if (!trimmed.equals(breedName)) {
-			breedName = trimmed;
-			updateOutput();
-		}
-	}
-
-	public String getBreedName() {
-		return breedName;
-	}
-
 	public void updateOutput() {
 		if (level == null || level.isClientSide()) {
 			return;
@@ -148,9 +132,6 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 		if (left.isEmpty() || right.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
-		if (breedName.isBlank()) {
-			return ItemStack.EMPTY;
-		}
 		if (left.getItem() != net.monkeyman42001.cannacraft.item.CannacraftItems.CANNABIS_SEED.get()
 				|| right.getItem() != net.monkeyman42001.cannacraft.item.CannacraftItems.CANNABIS_SEED.get()) {
 			return ItemStack.EMPTY;
@@ -164,6 +145,11 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 			return ItemStack.EMPTY;
 		}
 
+		var resultStrain = net.monkeyman42001.cannacraft.component.Strain.getBreedingResult(leftStrain, rightStrain);
+		if (resultStrain == null) {
+			return ItemStack.EMPTY;
+		}
+
 		var leftLineage = net.monkeyman42001.cannacraft.item.CannabisSeedItem.getLineage(left);
 		var rightLineage = net.monkeyman42001.cannacraft.item.CannabisSeedItem.getLineage(right);
 		net.monkeyman42001.cannacraft.component.LineageNode leftNode = leftLineage == null
@@ -172,49 +158,17 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 		net.monkeyman42001.cannacraft.component.LineageNode rightNode = rightLineage == null
 				? new net.monkeyman42001.cannacraft.component.LineageNode(rightStrain.name(), java.util.List.of())
 				: rightLineage;
-		int generation = Math.max(leftNode.depth(), rightNode.depth()) + 1;
-
-		float baseThc = lerp(leftStrain.thcPercentage(), rightStrain.thcPercentage(), 0.4f);
-		float baseTerpene = lerp(leftStrain.terpenePercentage(), rightStrain.terpenePercentage(), 0.4f);
-		float gainFactor = Math.min(0.05f + (generation * 0.005f), 0.20f);
-
-		float newThc = roundToTenth(applyGain(baseThc, 30.0f, gainFactor));
-		float newTerpene = roundToHundredth(applyGain(baseTerpene, 3.0f, gainFactor));
-
-		var newStrain = new net.monkeyman42001.cannacraft.component.Strain(
-				breedName,
-				newThc,
-				newTerpene,
-				leftStrain.colorRgb(),
-				leftStrain.trade(),
-				leftStrain.effects()
-		);
 		ItemStack result = new ItemStack(net.monkeyman42001.cannacraft.item.CannacraftItems.CANNABIS_SEED.get());
-		net.monkeyman42001.cannacraft.item.CannabisSeedItem.setStrain(result, newStrain);
-		net.monkeyman42001.cannacraft.item.CannabisSeedItem.setLineage(result, buildLineageTree(leftNode, rightNode));
+		net.monkeyman42001.cannacraft.item.CannabisSeedItem.setStrain(result, resultStrain);
+		net.monkeyman42001.cannacraft.item.CannabisSeedItem.setLineage(result, buildLineageTree(resultStrain.name(), leftNode, rightNode));
 		return result;
 	}
 
-	private static float lerp(float start, float end, float factor) {
-		return start + (end - start) * factor;
-	}
-
-	private static float applyGain(float baseValue, float capValue, float gainFactor) {
-		return baseValue + (capValue - baseValue) * gainFactor;
-	}
-
-	private static float roundToTenth(float value) {
-		return Math.round(value * 10.0f) / 10.0f;
-	}
-
-	private static float roundToHundredth(float value) {
-		return Math.round(value * 100.0f) / 100.0f;
-	}
-
 	private net.monkeyman42001.cannacraft.component.LineageNode buildLineageTree(
+			String name,
 			net.monkeyman42001.cannacraft.component.LineageNode leftNode,
 			net.monkeyman42001.cannacraft.component.LineageNode rightNode
 	) {
-		return new net.monkeyman42001.cannacraft.component.LineageNode(breedName, java.util.List.of(leftNode, rightNode));
+		return new net.monkeyman42001.cannacraft.component.LineageNode(name, java.util.List.of(leftNode, rightNode));
 	}
 }

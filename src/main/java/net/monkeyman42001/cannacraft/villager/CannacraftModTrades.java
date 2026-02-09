@@ -49,6 +49,60 @@ public class CannacraftModTrades {
             );
         };
     }
+
+    private static java.util.List<Filterable<Component>> buildDealerCatalogPages() {
+        String pageOne = "Dealer Catalog\n"
+                + "Level 1 Strains\n"
+                + "----------------\n"
+                + "- Afghan Kush\n"
+                + "- Durban Poison\n"
+                + "- Haze\n"
+                + "- Skunk #1\n"
+                + "- Chemdawg\n"
+                + "- Blueberry";
+        String pageTwo = "Breeding Chart\n"
+                + "Basics\n"
+                + "------\n"
+                + "Afghan Kush + Durban Poison =\n"
+                + "OG Kush\n"
+                + "Skunk #1 + Haze =\n"
+                + "Super Silver Haze\n"
+                + "Blueberry + Haze =\n"
+                + "Blue Dream\n"
+                + "Chemdawg + Skunk #1 =\n"
+                + "Sour Diesel\n"
+                + "Afghan Kush + Blueberry =\n"
+                + "Purple Kush";
+        String pageThree = "Breeding Chart\n"
+                + "Advanced\n"
+                + "--------\n"
+                + "OG Kush + Durban Poison =\n"
+                + "Girl Scout Cookies\n"
+                + "Girl Scout Cookies +\n"
+                + "Chemdawg = Garlic Cookies\n"
+                + "OG Kush + Chemdawg =\n"
+                + "Fire OG\n"
+                + "Blue Dream + OG Kush =\n"
+                + "Dream OG";
+        String pageFour = "Breeding Chart\n"
+                + "Elite\n"
+                + "-----\n"
+                + "Girl Scout Cookies +\n"
+                + "Fire OG = Animal Cookies\n"
+                + "Girl Scout Cookies +\n"
+                + "Sour Diesel = Sunset Sherbet\n"
+                + "Sunset Sherbet +\n"
+                + "Girl Scout Cookies = Gelato\n"
+                + "Gelato + Blueberry =\n"
+                + "Runtz";
+        return java.util.List.of(
+                Filterable.passThrough(Component.literal(pageOne)),
+                Filterable.passThrough(Component.literal(pageTwo)),
+                Filterable.passThrough(Component.literal(pageThree)),
+                Filterable.passThrough(Component.literal(pageFour))
+        );
+    }
+
 	@SubscribeEvent
     public static void addTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
@@ -56,15 +110,7 @@ public class CannacraftModTrades {
         levelOne.clear();
         levelOne.add((trader, random) -> {
             ItemStack book = new ItemStack(Items.WRITTEN_BOOK, 1);
-            java.util.List<Filterable<Component>> pages = java.util.List.of(Filterable.<Component>passThrough(Component.literal(
-                    "Dealer Level 1 Strains:\n"
-                            + "- Afghan Kush\n"
-                            + "- Durban Poison\n"
-                            + "- Haze\n"
-                            + "- Skunk #1\n"
-                            + "- Chemdawg\n"
-                            + "- Blueberry"
-            )));
+            java.util.List<Filterable<Component>> pages = buildDealerCatalogPages();
             var content = new WrittenBookContent(
                     Filterable.passThrough(DEALER_BOOK_TITLE),
                     DEALER_BOOK_AUTHOR,

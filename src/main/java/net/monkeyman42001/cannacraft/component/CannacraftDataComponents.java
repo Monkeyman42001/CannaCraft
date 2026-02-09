@@ -71,6 +71,14 @@ public class CannacraftDataComponents {
 				.networkSynchronized(ByteBufCodecs.BOOL)
 				.build()
 		);
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Strain>> BOWL_STRAIN =
+		DATA_COMPONENT_TYPES.register(
+			"bowl_strain",
+			() -> DataComponentType.<Strain>builder()
+				.persistent(Strain.CODEC)
+				.networkSynchronized(Strain.STREAM_CODEC)
+				.build()
+		);
 	//public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> STRAIN = DATA_COMPONENT_TYPES.register("strain", builder -> builder.persistant(Codec.STRING));
 
 	

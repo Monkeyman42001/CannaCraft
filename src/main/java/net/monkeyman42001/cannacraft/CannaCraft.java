@@ -62,6 +62,7 @@ public class CannaCraft {
         modEventBus.addListener(ClientModEvents::onRegisterMenuScreens);
         NeoForge.EVENT_BUS.addListener(CannacraftCraftingEvents::onItemCrafted);
         NeoForge.EVENT_BUS.addListener(CannacraftEvents::addCustomTrades);
+        NeoForge.EVENT_BUS.addListener(CannacraftEvents::onRightClickItem);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -102,6 +103,11 @@ public class CannaCraft {
 				CannacraftItems.JOINT.get(),
 				ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "lit"),
 				(stack, level, entity, seed) -> net.monkeyman42001.cannacraft.item.Smokable.isLit(stack) ? 1.0F : 0.0F
+			));
+			event.enqueueWork(() -> ItemProperties.register(
+				CannacraftItems.BOWL.get(),
+				ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "packed"),
+				(stack, level, entity, seed) -> net.monkeyman42001.cannacraft.item.BowlItem.isPacked(stack) ? 1.0F : 0.0F
 			));
 		}
 

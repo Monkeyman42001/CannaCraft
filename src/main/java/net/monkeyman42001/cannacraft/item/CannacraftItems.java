@@ -27,6 +27,7 @@ public class CannacraftItems {
 	public static final DeferredItem<Item> LIGHTER;
 	public static final DeferredItem<Item> MATCHBOX;
 	public static final DeferredItem<Item> GRINDER;
+	public static final DeferredItem<Item> BOWL;
 	static {
 		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new CannabisSeedItem(new Item.Properties()));
 		NUG = ITEMS.register("nug", () -> new NugItem(new Item.Properties()));
@@ -36,6 +37,7 @@ public class CannacraftItems {
 		LIGHTER = ITEMS.register("lighter", () -> new LighterItem(new Item.Properties().durability(100)));
 		MATCHBOX = ITEMS.register("matchbox", () -> new LighterItem(new Item.Properties().durability(10)));
 		GRINDER = ITEMS.register("grinder", () -> new Item(new Item.Properties().durability(128)));
+		BOWL = ITEMS.register("bowl", () -> new BowlItem(new Item.Properties().stacksTo(1)));
 	}
 
 	// Start of user code block custom items

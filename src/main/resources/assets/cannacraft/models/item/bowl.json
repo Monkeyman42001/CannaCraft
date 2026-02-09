@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "cannacraft:item/bowl"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "cannacraft:packed": 1.0
+      },
+      "model": "cannacraft:item/packed_bowl"
+    }
+  ]
+}

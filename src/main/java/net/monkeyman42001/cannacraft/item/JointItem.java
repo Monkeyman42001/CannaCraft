@@ -15,11 +15,10 @@ public class JointItem extends Smokable {
 	private static final boolean ENABLE_INVENTORY_BURN = true;
 	private static final int BURN_TICKS_PER_DAMAGE = 2;
 	private static final int BURN_DAMAGE = 1;
-	private static final int HIT_DAMAGE = 120;
 	private static final int USE_DAMAGE = 120;
 
 	public JointItem(Item.Properties properties) {
-		super(properties.stacksTo(1).durability(1200));
+		super(properties.stacksTo(1).durability(360));
 	}
 
 	@Override
@@ -88,32 +87,6 @@ public class JointItem extends Smokable {
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, LivingEntity attacker) {
-		if (isLit(itemstack) && !attacker.level().isClientSide) {
-			int nextDamage = itemstack.getDamageValue() + HIT_DAMAGE;
-			if (nextDamage >= itemstack.getMaxDamage()) {
-				itemstack.shrink(1);
-			} else {
-				itemstack.setDamageValue(nextDamage);
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public boolean onLeftClickEntity(ItemStack itemstack, Player player, Entity entity) {
-		if (isLit(itemstack) && !player.level().isClientSide) {
-			int nextDamage = itemstack.getDamageValue() + HIT_DAMAGE;
-			if (nextDamage >= itemstack.getMaxDamage()) {
-				itemstack.shrink(1);
-			} else {
-				itemstack.setDamageValue(nextDamage);
-			}
-		}
-		return false;
 	}
 
 	@Override

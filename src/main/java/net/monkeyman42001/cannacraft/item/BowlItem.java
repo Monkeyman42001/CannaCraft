@@ -3,15 +3,19 @@ package net.monkeyman42001.cannacraft.item;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.network.chat.Component;
 import net.monkeyman42001.cannacraft.component.Strain;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 
 import java.util.List;
 
@@ -49,13 +53,59 @@ public class BowlItem extends Item {
 		return true;
 	}
 
+	private static boolean hasIgnitionItem(Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		return stack.is(CannacraftItems.LIGHTER.get()) || stack.is(CannacraftItems.MATCHBOX.get());
+	}
+
+	private static void applySmokeEffects(LivingEntity living, Strain strain) {
+		if (strain == null) {
+			living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 0));
+			return;
+		}
+		List<MobEffectInstance> effects = strain.createEffectInstances();
+		if (effects.isEmpty()) {
+			living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 0));
+			return;
+		}
+		for (MobEffectInstance effect : effects) {
+			living.addEffect(effect);
+		}
+	}
+
+	@Override
+	public UseAnim getUseAnimation(ItemStack itemstack) {
+		return isPacked(itemstack) ? UseAnim.BOW : UseAnim.NONE;
+	}
+
+	@Override
+	public int getUseDuration(ItemStack itemstack, LivingEntity livingEntity) {
+		return isPacked(itemstack) ? 20 : 0;
+	}
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
 		if (tryPack(level, player, hand, otherHand)) {
 			return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
 		}
-		return InteractionResultHolder.pass(player.getItemInHand(hand));
+		ItemStack stack = player.getItemInHand(hand);
+		if (isPacked(stack) && hasIgnitionItem(player, otherHand)) {
+			player.startUsingItem(hand);
+			return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+		}
+		return InteractionResultHolder.pass(stack);
+	}
+
+	@Override
+	public ItemStack finishUsingItem(ItemStack itemstack, Level level, LivingEntity entity) {
+		ItemStack result = super.finishUsingItem(itemstack, level, entity);
+		if (!level.isClientSide && isPacked(itemstack)) {
+			Strain strain = itemstack.get(CannacraftDataComponents.BOWL_STRAIN.get());
+			applySmokeEffects(entity, strain);
+			itemstack.remove(CannacraftDataComponents.BOWL_STRAIN.get());
+		}
+		return result;
 	}
 
 	@Override
@@ -67,6 +117,11 @@ public class BowlItem extends Item {
 		InteractionHand hand = context.getHand();
 		InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
 		if (tryPack(context.getLevel(), player, hand, otherHand)) {
+			return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
+		}
+		ItemStack stack = context.getItemInHand();
+		if (isPacked(stack) && hasIgnitionItem(player, otherHand)) {
+			player.startUsingItem(hand);
 			return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
 		}
 		return InteractionResult.PASS;
